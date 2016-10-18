@@ -1,34 +1,17 @@
 #!/bin/bash
 
-k_install="install"
-k_remove="uninstall"
-k_fix="fix"
+PRIMARY_BRANCH="refonte_back"
+DIRNAME="back"
 
-install() {
-	echo install
-}
-
-remove() {
-	echo remove
-}
-
-fix() {
-	echo fix
-}
-
-help() {
-	echo help
-}
-
-if [ "$1" = "${k_install}" ]
-then
-	install
-elif [ "$1" = "${k_remove}" ]
-then
-	remove
-elif [ "$1" = "${k_fix}" ]
-then
-	fix
-else
-	help
-fi
+echo "Clone distant repository"
+git clone git@bitbucket.org:darkael/rhproject.git ${DIRNAME}
+cd ${DIRNAME}
+echo "Switch to right branch"
+git checkout ${PRIMARY_BRANCH}
+git pull
+echo "Execute pre-install script"
+sudo node ./scripts/preinstall.js
+echo "Install dependencies"
+npm install
+echo "Execute post-install script"
+sudo node ./scripts/postinstall.js
